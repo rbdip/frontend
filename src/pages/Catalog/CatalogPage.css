@@ -1,0 +1,25 @@
+/* src/pages/Catalog/CatalogPage.css */
+
+.catalog-container {
+    margin-top: 40px;
+}
+
+.catalog-skeleton {
+    margin-bottom: 16px;
+    border-radius: 8px;
+}
+
+.catalog-list {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.catalog-card {
+    border-radius: 12px;
+}
+
+.catalog-more-button {
+    margin-top: 8px;
+}

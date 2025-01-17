@@ -1,0 +1,20 @@
+/* src/pages/ServiceForm/ServiceFormPage.css */
+
+.service-form-container {
+    margin-top: 40px;
+}
+
+.service-form-box {
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.service-form {
+    margin-top: 16px;
+}
+
+.service-form-button {
+    margin-top: 20px;
+}

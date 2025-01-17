@@ -1,0 +1,10 @@
+/* src/pages/Dashboard/DashboardPage.css */
+
+.dashboard-container {
+    margin-top: 40px;
+}
+
+.dashboard-welcome {
+    margin-top: 16px;
+    color: #555;
+}

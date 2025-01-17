@@ -1,0 +1,20 @@
+/* src/pages/Login/LoginPage.css */
+
+.login-container {
+    margin-top: 40px;
+}
+
+.login-box {
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.login-form {
+    margin-top: 16px;
+}
+
+.login-button {
+    margin-top: 20px;
+}

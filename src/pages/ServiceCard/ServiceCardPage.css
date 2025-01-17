@@ -1,0 +1,43 @@
+/* src/pages/ServiceCard/ServiceCardPage.css */
+
+.service-card-container {
+    margin-top: 40px;
+}
+
+.service-skeleton-title {
+    width: 30%;
+    height: 40px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+}
+
+.service-skeleton-line {
+    width: 80%;
+    height: 20px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+}
+
+.service-info {
+    margin-top: 16px;
+    font-weight: 500;
+}
+
+.service-author {
+    margin-top: 8px;
+    font-style: italic;
+    color: #666;
+}
+
+.service-description {
+    margin-top: 16px;
+}
+
+.service-versions {
+    margin-top: 24px;
+}
+
+.service-version-item {
+    margin-left: 16px;
+    margin-top: 4px;
+}

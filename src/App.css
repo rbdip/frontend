@@ -1,0 +1,7 @@
+/* src/App.css */
+.app-container {
+    /* Можно задать общий font-family, background-color и т.д. */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
