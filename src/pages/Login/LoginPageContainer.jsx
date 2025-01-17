@@ -9,14 +9,8 @@ function LoginPageContainer({ onNotify }) {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    // Логика (useForm)
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    // Отправка формы
     const onSubmit = async (data) => {
         try {
             await login({ user: data.username, pass: data.password });
@@ -27,7 +21,6 @@ function LoginPageContainer({ onNotify }) {
         }
     };
 
-    // Передаём нужные пропсы во View
     return (
         <LoginPageView
             onSubmit={handleSubmit(onSubmit)}

@@ -1,20 +1,17 @@
 // src/pages/Catalog/CatalogPageContainer.jsx
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getAllProjectsApi } from '../../api/projectApi';
 import CatalogPageView from './CatalogPageView';
-import { getAllProjects } from '../../api/projectApi';
-import { useAuth } from '../../context/AuthContext';
 
 function CatalogPageContainer({ onNotify }) {
-    const { username, password } = useAuth();
-    const [projects, setProjects] = useState(null);
+    const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         let mounted = true;
         (async () => {
             try {
-                setLoading(true);
-                const data = await getAllProjects({ username, password });
+                const data = await getAllProjectsApi(); // без логин/пароль
                 if (mounted) {
                     setProjects(data);
                 }
@@ -27,14 +24,9 @@ function CatalogPageContainer({ onNotify }) {
         return () => {
             mounted = false;
         };
-    }, [username, password, onNotify]);
+    }, [onNotify]);
 
-    return (
-        <CatalogPageView
-            loading={loading}
-            projects={projects}
-        />
-    );
+    return <CatalogPageView loading={loading} projects={projects} />;
 }
 
 export default CatalogPageContainer;

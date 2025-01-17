@@ -17,11 +17,11 @@ function RegisterPageContainer({ onNotify }) {
 
     const onSubmit = async (data) => {
         try {
-            await registerAction({ user: data.username, pass: data.password });
-            onNotify('Регистрация (заглушка) успешно!', 'success');
+            await registerAction({ user: data.username, pass: data.password, displayName: data.display_name });
+            onNotify('Регистрация успешна!', 'success');
             navigate('/dashboard');
         } catch (error) {
-            onNotify(`Ошибка: ${error.message}`, 'error');
+            onNotify(`Ошибка регистрации: ${error.message}`, 'error');
         }
     };
 

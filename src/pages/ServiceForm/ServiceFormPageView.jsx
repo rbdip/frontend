@@ -9,12 +9,12 @@ import {
 } from '@mui/material';
 import './ServiceFormPage.css';
 
-function ServiceFormPageView({ onSubmit, register, errors }) {
+function ServiceFormPageView({ editMode, onSubmit, register, errors }) {
     return (
         <Container maxWidth="sm" className="service-form-container">
             <Box className="service-form-box">
                 <Typography variant="h5" gutterBottom>
-                    Создать новый проект
+                    {editMode ? 'Редактировать сервис' : 'Создать новый сервис'}
                 </Typography>
 
                 <form onSubmit={onSubmit} className="service-form">
@@ -25,6 +25,7 @@ function ServiceFormPageView({ onSubmit, register, errors }) {
                         {...register('name', { required: 'Введите name' })}
                         error={!!errors.name}
                         helperText={errors.name?.message}
+                        disabled={editMode}
                     />
                     <TextField
                         label="Title (название)"
@@ -43,7 +44,7 @@ function ServiceFormPageView({ onSubmit, register, errors }) {
                         {...register('description')}
                     />
                     <Button variant="contained" type="submit" className="service-form-button">
-                        Создать
+                        {editMode ? 'Сохранить' : 'Создать'}
                     </Button>
                 </form>
             </Box>

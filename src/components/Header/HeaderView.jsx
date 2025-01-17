@@ -1,11 +1,10 @@
 // src/components/Header/HeaderView.jsx
-import React from 'react';
+import 'react';
 import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-
 import './Header.css';
 
 function HeaderView({ username, isAuthenticated, onLogout }) {
@@ -23,6 +22,9 @@ function HeaderView({ username, isAuthenticated, onLogout }) {
                         </Button>
                         <Button color="inherit" component={Link} to="/catalog">
                             Каталог
+                        </Button>
+                        <Button color="inherit" component={Link} to="/service/new">
+                            Создать сервис
                         </Button>
                         <Button color="inherit" onClick={onLogout}>
                             Выйти

@@ -1,14 +1,11 @@
-/* src/pages/Login/LoginPage.css */
-
 .login-container {
     margin-top: 40px;
 }
 
 .login-box {
     padding: 16px;
-    background-color: #fff;
+    background-color: var(--mui-palette-background-paper, #3b2b50);
     border-radius: 12px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .login-form {

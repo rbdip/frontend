@@ -1,9 +1,10 @@
 // src/context/AuthContext.jsx
-import  { createContext, useContext, useEffect, useState } from 'react';
-import { checkCredentials } from '../api/projectApi';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { loginUserApi, registerUserApi } from '../api/projectApi';
 
 const AuthContext = createContext(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
     return useContext(AuthContext);
 }
@@ -39,14 +40,23 @@ export function AuthProvider({ children }) {
         setIsAuthenticated(false);
     }
 
+    /**
+     * Если loginUserApi вернёт false => значит 401 => выбросим ошибку
+     * Если true => doLogin(...)
+     */
     async function login({ user, pass }) {
-        // Проверяем пару (логин, пароль) через любой доступный эндпоинт
-        await checkCredentials({ username: user, password: pass });
+        const success = await loginUserApi(user, pass);
+        if (!success) {
+            throw new Error('Неверный логин или пароль');
+        }
         doLogin(user, pass);
     }
 
-    async function register({ user, pass }) {
-        // Заглушка регистрации (нет реального эндпоинта)
+    async function register({ user, pass, displayName }) {
+        const success = await registerUserApi(user, pass, displayName);
+        if (!success) {
+            throw new Error('Ошибка регистрации или 401');
+        }
         doLogin(user, pass);
     }
 

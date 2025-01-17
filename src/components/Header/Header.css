@@ -1,16 +1,17 @@
 /* src/components/Header/Header.css */
-
-/* Пример простых классов */
 .header-appbar {
-    background-color: #1976d2; /* Можно переопределить тему или оставить */
+
 }
+
 .header-toolbar {
     display: flex;
     justify-content: space-between;
 }
+
 .header-title {
     flex-grow: 1;
 }
+
 .header-username {
     margin-left: 16px;
 }

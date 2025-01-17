@@ -1,5 +1,5 @@
 // src/pages/Login/LoginPageView.jsx
-import React from 'react';
+import 'react';
 import { Container, Typography, Box, TextField, Button } from '@mui/material';
 import './LoginPage.css';
 
@@ -10,7 +10,6 @@ function LoginPageView({ onSubmit, register, errors }) {
                 <Typography variant="h5" gutterBottom>
                     Вход (Basic Auth)
                 </Typography>
-
                 <form onSubmit={onSubmit} className="login-form">
                     <TextField
                         label="Логин"
@@ -29,7 +28,6 @@ function LoginPageView({ onSubmit, register, errors }) {
                         error={!!errors.password}
                         helperText={errors.password?.message}
                     />
-
                     <Button variant="contained" type="submit" className="login-button">
                         Войти
                     </Button>

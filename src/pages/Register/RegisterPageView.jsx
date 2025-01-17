@@ -1,6 +1,12 @@
 // src/pages/Register/RegisterPageView.jsx
 import 'react';
-import { Container, Typography, Box, TextField, Button } from '@mui/material';
+import {
+    Container,
+    Typography,
+    Box,
+    TextField,
+    Button,
+} from '@mui/material';
 import './RegisterPage.css';
 
 function RegisterPageView({ onSubmit, register, errors }) {
@@ -8,15 +14,14 @@ function RegisterPageView({ onSubmit, register, errors }) {
         <Container maxWidth="sm" className="register-container">
             <Box className="register-box">
                 <Typography variant="h5" gutterBottom>
-                    Регистрация (заглушка)
+                    Регистрация
                 </Typography>
-
                 <form onSubmit={onSubmit} className="register-form">
                     <TextField
-                        label="Логин"
+                        label="Логин (username)"
                         fullWidth
                         margin="normal"
-                        {...register('username', { required: 'Введите логин' })}
+                        {...register('username', { required: 'Укажите логин' })}
                         error={!!errors.username}
                         helperText={errors.username?.message}
                     />
@@ -25,9 +30,15 @@ function RegisterPageView({ onSubmit, register, errors }) {
                         type="password"
                         fullWidth
                         margin="normal"
-                        {...register('password', { required: 'Введите пароль' })}
+                        {...register('password', { required: 'Укажите пароль' })}
                         error={!!errors.password}
                         helperText={errors.password?.message}
+                    />
+                    <TextField
+                        label="Отображаемое имя (необязательно)"
+                        fullWidth
+                        margin="normal"
+                        {...register('display_name')}
                     />
 
                     <Button variant="contained" type="submit" className="register-button">

@@ -1,9 +1,10 @@
 // src/pages/ServiceCard/ServiceCardPageView.jsx
 import 'react';
-import { Container, Typography, Box, Skeleton } from '@mui/material';
+import { Container, Typography, Box, Skeleton, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 import './ServiceCardPage.css';
 
-function ServiceCardPageView({ loading, project }) {
+function ServiceCardPageView({ loading, project, currentUser, onDelete }) {
     if (loading) {
         return (
             <Container maxWidth="md" className="service-card-container">
@@ -21,6 +22,8 @@ function ServiceCardPageView({ loading, project }) {
             </Container>
         );
     }
+
+    const canEdit = currentUser === project.author_username;
 
     return (
         <Container maxWidth="md" className="service-card-container">
@@ -43,6 +46,22 @@ function ServiceCardPageView({ loading, project }) {
                             <Typography>• {v.display_name}</Typography>
                         </Box>
                     ))}
+                </Box>
+            )}
+
+            {canEdit && (
+                <Box className="service-edit-button">
+                    <Button
+                        variant="contained"
+                        component={Link}
+                        to={`/service/${project.author_username}/${project.name}/edit`}
+                        sx={{ mr: 2 }}
+                    >
+                        Редактировать
+                    </Button>
+                    <Button variant="outlined" color="error" onClick={onDelete}>
+                        Удалить
+                    </Button>
                 </Box>
             )}
         </Container>
