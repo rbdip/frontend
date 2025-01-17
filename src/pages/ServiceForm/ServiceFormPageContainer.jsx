@@ -1,9 +1,9 @@
 // src/pages/ServiceForm/ServiceFormPageContainer.jsx
-import  { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
-    createProjectApi,
     getProjectByNameApi,
+    createProjectApi,
     updateProjectApi,
 } from '../../api/projectApi';
 import { useAuth } from '../../context/AuthContext';
@@ -22,26 +22,31 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
         reset,
     } = useForm();
 
+    const [loading, setLoading] = useState(false);
+
+    // Если editMode, грузим данные проекта, чтобы заполнить форму
     useEffect(() => {
         if (editMode && authorUsername && projectName) {
             let mounted = true;
             (async () => {
                 try {
-                    const data = await getProjectByNameApi(
-                        username,
-                        password,
-                        authorUsername,
-                        projectName
-                    );
+                    setLoading(true);
+                    const data = await getProjectByNameApi(username, password, authorUsername, projectName);
                     if (mounted && data) {
+                        // Выставляем значения (title, name, description, display_version?)
+                        // Но формат PATCH: { project_name, title, version_name, description }
+                        // Если хотим дать пользователю менять project_name -> отдельное поле
                         reset({
-                            name: data.name,
-                            title: data.title,
-                            description: data.description,
+                            title: data.title || '',
+                            project_name: data.name || '',
+                            version_name: data.display_version || '',
+                            description: data.description || '',
                         });
                     }
                 } catch (error) {
                     onNotify(`Ошибка: ${error.message}`, 'error');
+                } finally {
+                    if (mounted) setLoading(false);
                 }
             })();
             return () => {
@@ -53,19 +58,23 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
     const onSubmit = async (formData) => {
         try {
             if (editMode) {
-                await updateProjectApi(
+                // PATCH
+                const updated = await updateProjectApi(
                     username,
                     password,
                     authorUsername,
                     projectName,
                     formData
                 );
-                onNotify('Проект обновлён!', 'success');
+                onNotify('Сервис обновлён!', 'success');
+                // Можем перейти на просмотр
+                navigate(`/service/${updated.author_username}/${updated.name}`);
             } else {
-                await createProjectApi(username, password, formData);
-                onNotify('Проект создан!', 'success');
+                // POST (создать)
+                const created = await createProjectApi(username, password, formData);
+                onNotify('Сервис создан!', 'success');
+                navigate(`/service/${created.author_username}/${created.name}`);
             }
-            navigate('/catalog');
         } catch (error) {
             onNotify(`Ошибка: ${error.message}`, 'error');
         }
@@ -74,6 +83,7 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
     return (
         <ServiceFormPageView
             editMode={editMode}
+            loading={loading}
             onSubmit={handleSubmit(onSubmit)}
             register={register}
             errors={errors}

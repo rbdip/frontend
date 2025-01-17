@@ -17,27 +17,17 @@
 }
 
 .service-info {
-    margin-top: 16px;
+    margin-top: 8px;
     font-weight: 500;
 }
 
-.service-author {
+.service-dates {
     margin-top: 8px;
-    font-style: italic;
     color: #ccc;
 }
 
 .service-description {
     margin-top: 16px;
-}
-
-.service-versions {
-    margin-top: 24px;
-}
-
-.service-version-item {
-    margin-left: 16px;
-    margin-top: 4px;
 }
 
 .service-edit-button {

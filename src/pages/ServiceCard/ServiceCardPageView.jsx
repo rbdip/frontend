@@ -1,10 +1,27 @@
 // src/pages/ServiceCard/ServiceCardPageView.jsx
 import 'react';
-import { Container, Typography, Box, Skeleton, Button } from '@mui/material';
+import {
+    Container,
+    Typography,
+    Box,
+    Skeleton,
+    Button,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import './ServiceCardPage.css';
 
-function ServiceCardPageView({ loading, project, currentUser, onDelete }) {
+function ServiceCardPageView({
+                                 loading,
+                                 project,
+                                 currentUser,
+                                 onDelete,
+                                 selectedVersion,
+                                 onSelectVersion,
+                             }) {
     if (loading) {
         return (
             <Container maxWidth="md" className="service-card-container">
@@ -27,27 +44,46 @@ function ServiceCardPageView({ loading, project, currentUser, onDelete }) {
 
     return (
         <Container maxWidth="md" className="service-card-container">
-            <Typography variant="h4">{project.title}</Typography>
+            <Typography variant="h4" gutterBottom>
+                {project.title}
+            </Typography>
             <Typography className="service-info">
                 name: {project.name}
             </Typography>
-            <Typography className="service-author">
-                Автор: {project.author_display_name} ({project.author_username})
+            <Typography className="service-info">
+                Автор: {project.author_display_name || project.author_username}
             </Typography>
-            <Typography className="service-description">
+            <Typography className="service-dates">
+                Создан: {project.created_on}, Обновлён: {project.updated_on}
+            </Typography>
+            <Typography className="service-description" sx={{ mt: 2 }}>
                 {project.description}
             </Typography>
 
-            {project.versions && project.versions.length > 0 && (
-                <Box className="service-versions">
-                    <Typography variant="h6">Версии:</Typography>
-                    {project.versions.map((v) => (
-                        <Box key={v.id} className="service-version-item">
-                            <Typography>• {v.display_name}</Typography>
-                        </Box>
-                    ))}
-                </Box>
-            )}
+            {/* Селектор версий */}
+            <Box sx={{ mt: 3 }}>
+                <FormControl>
+                    <InputLabel>Версия</InputLabel>
+                    <Select
+                        value={selectedVersion || ''}
+                        label="Версия"
+                        onChange={(e) => onSelectVersion(e.target.value)}
+                        sx={{ minWidth: 200 }}
+                    >
+                        {project.versions?.map((ver) => (
+                            <MenuItem key={ver.id} value={ver.display_name}>
+                                {ver.display_name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </Box>
+
+            <Box sx={{ mt: 3, display: 'flex', gap: 2 }}>
+                <Typography variant="body1">
+                    Текущая (display_version): {project.display_version}
+                </Typography>
+            </Box>
 
             {canEdit && (
                 <Box className="service-edit-button">

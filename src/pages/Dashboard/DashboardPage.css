@@ -1,3 +1,5 @@
+/* src/pages/Dashboard/DashboardPage.css */
+
 .dashboard-container {
     margin-top: 40px;
 }
@@ -7,6 +9,42 @@
     margin-top: 16px;
 }
 
-.dashboard-user {
+.dashboard-user-box {
     margin-top: 16px;
+    padding: 16px;
+    background-color: var(--mui-palette-background-paper, #3b2b50);
+    border-radius: 8px;
+}
+
+.dashboard-user-edit {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dashboard-input {
+    max-width: 300px;
+}
+
+.dashboard-btn-save {
+    width: fit-content;
+}
+
+.dashboard-btn-delete {
+    width: fit-content;
+}
+
+.dashboard-projects-box {
+    margin-top: 24px;
+}
+
+.dashboard-project-card {
+    margin-top: 16px;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.dashboard-btn-open {
+    margin-top: 8px;
 }
