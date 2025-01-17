@@ -1,5 +1,5 @@
 // src/pages/Dashboard/DashboardPageContainer.jsx
-import { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import {
     getUserInfoApi,
@@ -14,6 +14,7 @@ function DashboardPageContainer({ onNotify }) {
 
     const [userData, setUserData] = useState(null);
     const [displayName, setDisplayName] = useState('');
+    const [newPassword, setNewPassword] = useState('');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -24,7 +25,6 @@ function DashboardPageContainer({ onNotify }) {
                 const data = await getUserInfoApi(username, password, username);
                 if (mounted && data) {
                     setUserData(data);
-                    // Заполним displayName (если есть)
                     setDisplayName(data.display_name || '');
                 }
             } catch (error) {
@@ -41,10 +41,21 @@ function DashboardPageContainer({ onNotify }) {
     // Сохранить изменения пользователя (PATCH)
     const handleSaveUser = async () => {
         try {
-            const body = { display_name: displayName };
+            // Формируем body (минимум одно поле)
+            const body = {};
+            if (displayName) body.display_name = displayName;
+            if (newPassword) body.password = newPassword;
+
+            if (Object.keys(body).length === 0) {
+                onNotify('Нет данных для обновления', 'info');
+                return;
+            }
+
             const updatedUser = await updateUserApi(username, password, username, body);
             setUserData(updatedUser);
             onNotify('Профиль обновлён', 'success');
+            // Очистим поле пароля
+            setNewPassword('');
         } catch (error) {
             onNotify(`Ошибка при обновлении профиля: ${error.message}`, 'error');
         }
@@ -67,6 +78,8 @@ function DashboardPageContainer({ onNotify }) {
             userData={userData}
             displayName={displayName}
             setDisplayName={setDisplayName}
+            newPassword={newPassword}
+            setNewPassword={setNewPassword}
             loading={loading}
             onSaveUser={handleSaveUser}
             onDeleteUser={handleDeleteUser}

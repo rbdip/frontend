@@ -3,6 +3,7 @@ import 'react';
 import { Container, Typography, Box, Card, CardContent, Button, Skeleton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import './CatalogPage.css';
+import dayjs from "dayjs";
 
 function CatalogPageView({ loading, projects }) {
     if (loading) {
@@ -28,24 +29,33 @@ function CatalogPageView({ loading, projects }) {
                 Каталог сервисов
             </Typography>
             <Box className="catalog-list">
-                {projects.map((proj) => (
-                    <Card key={proj.id} className="catalog-card">
-                        <CardContent>
-                            <Typography variant="h6">{proj.title}</Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                name: {proj.name}
-                            </Typography>
-                            <Button
-                                variant="contained"
-                                component={Link}
-                                to={`/service/${proj.author}/${proj.name}`}
-                                className="catalog-more-button"
-                            >
-                                Открыть
-                            </Button>
-                        </CardContent>
-                    </Card>
-                ))}
+                {projects.map((proj) => {
+                    const createdOnHuman = dayjs(proj.created_on).format('DD.MM.YYYY HH:mm');
+                    return (
+                        <Card key={proj.id} className="catalog-card">
+                            <CardContent>
+                                <Typography variant="h6">{proj.title}</Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    name: {proj.name}
+                                </Typography>
+                                {/* "красиво и не особо заметно" → используем Typography variant="caption" */}
+                                <Typography variant="caption" display="block" sx={{ mt: 1, color: 'gray' }}>
+                                    Дата создания: {createdOnHuman}
+                                </Typography>
+
+                                <Button
+                                    variant="contained"
+                                    component={Link}
+                                    to={`/service/${proj.author.username}/${proj.name}`}
+                                    className="catalog-more-button"
+                                    sx={{ mt: 1 }}
+                                >
+                                    Открыть
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    );
+                })}
             </Box>
         </Container>
     );

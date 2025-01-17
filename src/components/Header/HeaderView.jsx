@@ -12,7 +12,7 @@ function HeaderView({ username, isAuthenticated, onLogout }) {
         <AppBar position="static" className="header-appbar">
             <Toolbar className="header-toolbar">
                 <Typography variant="h6" className="header-title">
-                    Web Services Store
+                    Microservices Store
                 </Typography>
 
                 {isAuthenticated ? (

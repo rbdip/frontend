@@ -1,5 +1,5 @@
 // src/pages/ServiceForm/ServiceFormPageView.jsx
-import React from 'react';
+import 'react';
 import {
     Container,
     Typography,
@@ -39,15 +39,14 @@ function ServiceFormPageView({
                 </Typography>
 
                 <form onSubmit={onSubmit} className="service-form">
-                    {/* project_name — если это обновление, разрешаем изменить имя? */}
                     <TextField
-                        label="Project name (уникальный)"
+                        label="Name (уникальный)"
                         fullWidth
                         margin="normal"
-                        {...register('project_name')}
-                        // Ошибки, если нужны:
-                        error={!!errors.project_name}
-                        helperText={errors.project_name?.message}
+                        {...register('name', { required: !editMode })}
+                        error={!!errors.name}
+                        helperText={errors.name ? 'Укажите name (обязательно при создании)' : ''}
+                        // disabled={editMode}
                     />
 
                     <TextField
@@ -60,15 +59,6 @@ function ServiceFormPageView({
                     />
 
                     <TextField
-                        label="Версия (version_name)"
-                        fullWidth
-                        margin="normal"
-                        {...register('version_name')}
-                        error={!!errors.version_name}
-                        helperText={errors.version_name?.message}
-                    />
-
-                    <TextField
                         label="Описание (description)"
                         fullWidth
                         margin="normal"
@@ -77,6 +67,25 @@ function ServiceFormPageView({
                         {...register('description')}
                         error={!!errors.description}
                         helperText={errors.description?.message}
+                    />
+
+                    <TextField
+                        label="Версия (display_version) (не обязательно)"
+                        fullWidth
+                        margin="normal"
+                        {...register('display_version')}
+                        error={!!errors.display_version}
+                        helperText={errors.display_version?.message}
+                    />
+
+                    <TextField
+                        label="Порядок версии (display_order) (не обязательно)"
+                        fullWidth
+                        margin="normal"
+                        type="number"
+                        {...register('display_order')}
+                        error={!!errors.display_order}
+                        helperText={errors.display_order?.message}
                     />
 
                     <Button variant="contained" type="submit" className="service-form-button">

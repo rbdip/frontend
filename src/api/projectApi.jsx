@@ -166,11 +166,9 @@ export async function createProjectApi(username, password, body) {
         },
         body: JSON.stringify(body),
     });
-
     if (!resp.ok) {
         throw new Error(`Ошибка при создании проекта: [${resp.status}]`);
     }
-
     return await resp.json();
 }
 

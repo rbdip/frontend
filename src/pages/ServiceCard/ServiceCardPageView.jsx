@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import './ServiceCardPage.css';
+import dayjs from "dayjs";
 
 function ServiceCardPageView({
                                  loading,
@@ -40,7 +41,7 @@ function ServiceCardPageView({
         );
     }
 
-    const canEdit = currentUser === project.author_username;
+    const canEdit = currentUser === project.author.username;
 
     return (
         <Container maxWidth="md" className="service-card-container">
@@ -51,10 +52,10 @@ function ServiceCardPageView({
                 name: {project.name}
             </Typography>
             <Typography className="service-info">
-                Автор: {project.author_display_name || project.author_username}
+                Автор: {project.author.username}
             </Typography>
             <Typography className="service-dates">
-                Создан: {project.created_on}, Обновлён: {project.updated_on}
+                Создан: {dayjs(project.created_on).format('DD.MM.YYYY HH:mm')}, Обновлён: {dayjs(project.updated_on).format('DD.MM.YYYY HH:mm')}
             </Typography>
             <Typography className="service-description" sx={{ mt: 2 }}>
                 {project.description}
@@ -71,8 +72,8 @@ function ServiceCardPageView({
                         sx={{ minWidth: 200 }}
                     >
                         {project.versions?.map((ver) => (
-                            <MenuItem key={ver.id} value={ver.display_name}>
-                                {ver.display_name}
+                            <MenuItem key={ver.id} value={ver.version_name}>
+                                {ver.version_name}
                             </MenuItem>
                         ))}
                     </Select>
@@ -90,7 +91,7 @@ function ServiceCardPageView({
                     <Button
                         variant="contained"
                         component={Link}
-                        to={`/service/${project.author_username}/${project.name}/edit`}
+                        to={`/service/${project.author.username}/${project.name}/edit`}
                         sx={{ mr: 2 }}
                     >
                         Редактировать

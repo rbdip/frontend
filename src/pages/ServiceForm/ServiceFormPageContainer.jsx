@@ -38,8 +38,8 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
                         // Если хотим дать пользователю менять project_name -> отдельное поле
                         reset({
                             title: data.title || '',
-                            project_name: data.name || '',
-                            version_name: data.display_version || '',
+                            project_name: data.project_name || '',
+                            display_version: data.display_version || '',
                             description: data.description || '',
                         });
                     }
@@ -58,7 +58,6 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
     const onSubmit = async (formData) => {
         try {
             if (editMode) {
-                // PATCH
                 const updated = await updateProjectApi(
                     username,
                     password,
@@ -68,12 +67,12 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
                 );
                 onNotify('Сервис обновлён!', 'success');
                 // Можем перейти на просмотр
-                navigate(`/service/${updated.author_username}/${updated.name}`);
+                navigate(`/service/${updated.author.username}/${updated.name}`);
             } else {
                 // POST (создать)
                 const created = await createProjectApi(username, password, formData);
                 onNotify('Сервис создан!', 'success');
-                navigate(`/service/${created.author_username}/${created.name}`);
+                navigate(`/service/${created.author.username}/${created.name}`);
             }
         } catch (error) {
             onNotify(`Ошибка: ${error.message}`, 'error');
