@@ -11,7 +11,7 @@ function CatalogPageContainer({ onNotify }) {
         let mounted = true;
         (async () => {
             try {
-                const data = await getAllProjectsApi(); // без логин/пароль
+                const data = await getAllProjectsApi();
                 if (mounted) {
                     setProjects(data);
                 }

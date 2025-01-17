@@ -38,7 +38,7 @@ function CatalogPageView({ loading, projects }) {
                             <Button
                                 variant="contained"
                                 component={Link}
-                                to={`/service/${proj.author_username}/${proj.name}`}
+                                to={`/service/${proj.author}/${proj.name}`}
                                 className="catalog-more-button"
                             >
                                 Открыть
