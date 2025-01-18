@@ -34,9 +34,9 @@ function CatalogPageView({ loading, projects }) {
                     return (
                         <Card key={proj.id} className="catalog-card">
                             <CardContent>
-                                <Typography variant="h6">{proj.title}</Typography>
+                                <Typography variant="h6">{proj.name}</Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                    name: {proj.name}
+                                    title: {proj.title}
                                 </Typography>
                                 {/* "красиво и не особо заметно" → используем Typography variant="caption" */}
                                 <Typography variant="caption" display="block" sx={{ mt: 1, color: 'gray' }}>

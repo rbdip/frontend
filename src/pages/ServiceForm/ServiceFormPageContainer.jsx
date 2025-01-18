@@ -1,4 +1,3 @@
-// src/pages/ServiceForm/ServiceFormPageContainer.jsx
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
@@ -13,7 +12,7 @@ import ServiceFormPageView from './ServiceFormPageView';
 function ServiceFormPageContainer({ onNotify, editMode = false }) {
     const { username, password } = useAuth();
     const navigate = useNavigate();
-    const { username: authorUsername, projectName } = useParams();
+    const { username: initialAuthorUsername, projectName: initialProjectName } = useParams();
 
     const {
         register,
@@ -23,8 +22,10 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
     } = useForm();
 
     const [loading, setLoading] = useState(false);
+    const [authorUsername, setAuthorUsername] = useState(initialAuthorUsername);
+    const [projectName, setProjectName] = useState(initialProjectName);
 
-    // Если editMode, грузим данные проекта, чтобы заполнить форму
+    // Если editMode, загружаем данные проекта для заполнения формы
     useEffect(() => {
         if (editMode && authorUsername && projectName) {
             let mounted = true;
@@ -33,12 +34,9 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
                     setLoading(true);
                     const data = await getProjectByNameApi(username, password, authorUsername, projectName);
                     if (mounted && data) {
-                        // Выставляем значения (title, name, description, display_version?)
-                        // Но формат PATCH: { project_name, title, version_name, description }
-                        // Если хотим дать пользователю менять project_name -> отдельное поле
                         reset({
                             title: data.title || '',
-                            project_name: data.project_name || '',
+                            name: data.name || '',
                             display_version: data.display_version || '',
                             description: data.description || '',
                         });
@@ -58,6 +56,7 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
     const onSubmit = async (formData) => {
         try {
             if (editMode) {
+                // Обновляем проект
                 const updated = await updateProjectApi(
                     username,
                     password,
@@ -66,10 +65,17 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
                     formData
                 );
                 onNotify('Сервис обновлён!', 'success');
-                // Можем перейти на просмотр
-                navigate(`/service/${updated.author.username}/${updated.name}`);
+
+                // Обновляем параметры маршрута
+                const newAuthorUsername = updated.author.username;
+                const newProjectName = updated.name;
+                setAuthorUsername(newAuthorUsername);
+                setProjectName(newProjectName);
+
+                // Перенаправляем на новый адрес с заменой истории
+                navigate(`/service/${newAuthorUsername}/${newProjectName}`, { replace: true });
             } else {
-                // POST (создать)
+                // Создаём проект
                 const created = await createProjectApi(username, password, formData);
                 onNotify('Сервис создан!', 'success');
                 navigate(`/service/${created.author.username}/${created.name}`);

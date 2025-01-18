@@ -85,9 +85,9 @@ function DashboardPageView({
                         return (
                             <Card key={proj.id} className="dashboard-project-card">
                                 <CardContent>
-                                    <Typography variant="h6">{proj.title}</Typography>
+                                    <Typography variant="h6">{proj.name}</Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        name: {proj.name}
+                                        title: {proj.title}
                                     </Typography>
                                     <Typography variant="caption" color="text.secondary">
                                         Дата: {createdOnProj}

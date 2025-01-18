@@ -1,12 +1,10 @@
-// src/pages/Dashboard/DashboardPageContainer.jsx
-import  { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import {
     getUserInfoApi,
     updateUserApi,
     deleteUserApi,
 } from '../../api/projectApi';
-
 import DashboardPageView from './DashboardPageView';
 
 function DashboardPageContainer({ onNotify }) {
@@ -16,32 +14,33 @@ function DashboardPageContainer({ onNotify }) {
     const [displayName, setDisplayName] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [loading, setLoading] = useState(true);
+    const [needsFetch, setNeedsFetch] = useState(true); // Флаг контроля вызовов API
 
-    useEffect(() => {
-        let mounted = true;
-        (async () => {
-            try {
-                setLoading(true);
-                const data = await getUserInfoApi(username, password, username);
-                if (mounted && data) {
-                    setUserData(data);
-                    setDisplayName(data.display_name || '');
-                }
-            } catch (error) {
-                onNotify(`Ошибка при загрузке профиля: ${error.message}`, 'error');
-            } finally {
-                if (mounted) setLoading(false);
-            }
-        })();
-        return () => {
-            mounted = false;
-        };
+    // Функция для загрузки данных пользователя
+    const fetchUserData = useCallback(async () => {
+        try {
+            setLoading(true);
+            const data = await getUserInfoApi(username, password, username);
+            setUserData(data);
+            setDisplayName(data.display_name || '');
+        } catch (error) {
+            onNotify(`Ошибка при загрузке профиля: ${error.message}`, 'error');
+        } finally {
+            setLoading(false);
+        }
     }, [username, password, onNotify]);
+
+    // Загрузка данных при монтировании или при изменении флага needsFetch
+    useEffect(() => {
+        if (needsFetch) {
+            fetchUserData();
+            setNeedsFetch(false); // Блокируем повторный вызов
+        }
+    }, [needsFetch, fetchUserData]);
 
     // Сохранить изменения пользователя (PATCH)
     const handleSaveUser = async () => {
         try {
-            // Формируем body (минимум одно поле)
             const body = {};
             if (displayName) body.display_name = displayName;
             if (newPassword) body.password = newPassword;
@@ -54,7 +53,6 @@ function DashboardPageContainer({ onNotify }) {
             const updatedUser = await updateUserApi(username, password, username, body);
             setUserData(updatedUser);
             onNotify('Профиль обновлён', 'success');
-            // Очистим поле пароля
             setNewPassword('');
         } catch (error) {
             onNotify(`Ошибка при обновлении профиля: ${error.message}`, 'error');
@@ -66,7 +64,6 @@ function DashboardPageContainer({ onNotify }) {
         try {
             await deleteUserApi(username, password, username);
             onNotify('Пользователь удалён!', 'success');
-            // Выходим из профиля
             logout();
         } catch (error) {
             onNotify(`Ошибка при удалении пользователя: ${error.message}`, 'error');

@@ -47,6 +47,10 @@ function App() {
                     path="/catalog"
                     element={<CatalogPageContainer onNotify={showNotification} />}
                 />
+                <Route
+                    path="/users/:username"
+                    element={<DashboardPageContainer onNotify={showNotification} />}
+                />
 
                 {/* Приватные маршруты */}
                 <Route

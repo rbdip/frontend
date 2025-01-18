@@ -69,24 +69,24 @@ function ServiceFormPageView({
                         helperText={errors.description?.message}
                     />
 
-                    <TextField
-                        label="Версия (display_version) (не обязательно)"
-                        fullWidth
-                        margin="normal"
-                        {...register('display_version')}
-                        error={!!errors.display_version}
-                        helperText={errors.display_version?.message}
-                    />
+                    {/*<TextField*/}
+                    {/*    label="Версия (display_version) (не обязательно)"*/}
+                    {/*    fullWidth*/}
+                    {/*    margin="normal"*/}
+                    {/*    {...register('display_version')}*/}
+                    {/*    error={!!errors.display_version}*/}
+                    {/*    helperText={errors.display_version?.message}*/}
+                    {/*/>*/}
 
-                    <TextField
-                        label="Порядок версии (display_order) (не обязательно)"
-                        fullWidth
-                        margin="normal"
-                        type="number"
-                        {...register('display_order')}
-                        error={!!errors.display_order}
-                        helperText={errors.display_order?.message}
-                    />
+                    {/*<TextField*/}
+                    {/*    label="Порядок версии (display_order) (не обязательно)"*/}
+                    {/*    fullWidth*/}
+                    {/*    margin="normal"*/}
+                    {/*    type="number"*/}
+                    {/*    {...register('display_order')}*/}
+                    {/*    error={!!errors.display_order}*/}
+                    {/*    helperText={errors.display_order?.message}*/}
+                    {/*/>*/}
 
                     <Button variant="contained" type="submit" className="service-form-button">
                         {editMode ? 'Сохранить' : 'Создать'}

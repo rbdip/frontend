@@ -1,5 +1,4 @@
-// src/pages/ServiceCard/ServiceCardPageContainer.jsx
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
     getProjectByNameApi,
@@ -10,51 +9,59 @@ import ServiceCardPageView from './ServiceCardPageView';
 
 function ServiceCardPageContainer({ onNotify }) {
     const { username, password } = useAuth();
-    const { username: authorUsername, projectName } = useParams();
+    const { username: initialAuthorUsername, projectName: initialProjectName } = useParams();
     const navigate = useNavigate();
 
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedVersion, setSelectedVersion] = useState(null);
+    const [authorUsername, setAuthorUsername] = useState(initialAuthorUsername);
+    const [projectName, setProjectName] = useState(initialProjectName);
+    const [needsFetch, setNeedsFetch] = useState(true); // Контроль вызова API
 
+    // Функция для загрузки данных проекта
+    const fetchProjectData = useCallback(async () => {
+        try {
+            setLoading(true);
+            const data = await getProjectByNameApi(username, password, authorUsername, projectName);
+            setProject(data);
+            setSelectedVersion(data.display_version || '');
+        } catch (error) {
+            onNotify(`Error: ${error.message}`, 'error');
+            navigate('/dashboard'); // Перенаправление на случай, если проект не найден
+        } finally {
+            setLoading(false);
+        }
+    }, [username, password, authorUsername, projectName, onNotify, navigate]);
+
+    // Первоначальная загрузка данных проекта
     useEffect(() => {
-        let mounted = true;
-        (async () => {
-            try {
-                setLoading(true);
-                const data = await getProjectByNameApi(username, password, authorUsername, projectName);
-                if (mounted && data) {
-                    setProject(data);
-                    // Версия, которая отображается сейчас (display_version)
-                    setSelectedVersion(data.display_version || '');
-                }
-            } catch (error) {
-                onNotify(`Ошибка: ${error.message}`, 'error');
-            } finally {
-                if (mounted) setLoading(false);
-            }
-        })();
-        return () => {
-            mounted = false;
-        };
-    }, [username, password, authorUsername, projectName, onNotify]);
+        if (needsFetch) {
+            fetchProjectData();
+            setNeedsFetch(false); // Блокируем повторный вызов
+        }
+    }, [needsFetch, fetchProjectData]);
 
-    // Удалить проект
     const handleDelete = async () => {
         try {
             await deleteProjectApi(username, password, authorUsername, projectName);
-            onNotify('Сервис удалён', 'success');
-            navigate('/dashboard');
+            onNotify('Service deleted', 'success');
+            navigate('/dashboard', { replace: true }); // Перенаправляем на Dashboard
         } catch (error) {
-            onNotify(`Ошибка при удалении: ${error.message}`, 'error');
+            onNotify(`Error deleting service: ${error.message}`, 'error');
         }
     };
 
-    // Смена версии в селекторе
+    const handleEditComplete = (newAuthorUsername, newProjectName) => {
+        // Обновляем состояние и URL после редактирования
+        setAuthorUsername(newAuthorUsername);
+        setProjectName(newProjectName);
+        setNeedsFetch(true); // Указываем, что требуется обновление данных
+        navigate(`/service/${newAuthorUsername}/${newProjectName}`, { replace: true });
+    };
+
     const handleVersionChange = (version) => {
         setSelectedVersion(version);
-        // Можно дополнительно что-то делать (обновлять display_version?) 
-        // Но по заданию, нужна просто возможность выбора в селекторе.
     };
 
     return (
@@ -63,6 +70,7 @@ function ServiceCardPageContainer({ onNotify }) {
             project={project}
             currentUser={username}
             onDelete={handleDelete}
+            onEditComplete={handleEditComplete}
             selectedVersion={selectedVersion}
             onSelectVersion={handleVersionChange}
         />
