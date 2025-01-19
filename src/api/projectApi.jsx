@@ -83,6 +83,7 @@ export async function getUserInfoApi(currentUser, currentPass, username) {
     return await resp.json();
 }
 
+
 /**
  * PATCH /api/v1/users/:username
  * request body: { "display_name": "Новое Имя" }

@@ -53,8 +53,34 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
         }
     }, [editMode, authorUsername, projectName, username, password, reset, onNotify]);
 
+    function validateLength(spaceValue, spaceName, startSize, endSize) {
+        if (spaceValue.length < startSize || spaceValue.length > endSize) {
+            throw new Error(`${spaceName} должно быть длиной от ${startSize} до ${endSize} символов`);
+        }
+    }
+
+    function validateNotNull(spaceValue, spaceName) {
+        if (!spaceValue) {
+            throw new Error(`${spaceName} не может быть пустым`);
+        }
+    }
+
+    function validatePattern(spaceValue, spaceName) {
+        if (!/^[a-zA-Z\-_0-9]+$/.test(spaceValue)) {
+            throw new Error(
+                `${spaceName} может содержать только буквы, цифры, дефис и подчеркивание`
+            );
+        }
+    }
+
     const onSubmit = async (formData) => {
         try {
+            validateNotNull(formData.name, "Name");
+            validateLength(formData.name, "Name", 5, 255);
+            validatePattern(formData.name, "Name");
+            validateNotNull(formData.title, "Заголовок");
+            validateLength(formData.title, "Заголовок", 1, 255);
+            validatePattern(formData.display_version, "Версия");
             if (editMode) {
                 // Обновляем проект
                 const updated = await updateProjectApi(

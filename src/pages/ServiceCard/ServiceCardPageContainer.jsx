@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
     getProjectByNameApi,
@@ -18,6 +18,7 @@ function ServiceCardPageContainer({ onNotify }) {
     const [authorUsername, setAuthorUsername] = useState(initialAuthorUsername);
     const [projectName, setProjectName] = useState(initialProjectName);
     const [needsFetch, setNeedsFetch] = useState(true); // Контроль вызова API
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     // Функция для загрузки данных проекта
     const fetchProjectData = useCallback(async () => {
@@ -37,8 +38,12 @@ function ServiceCardPageContainer({ onNotify }) {
     // Первоначальная загрузка данных проекта
     useEffect(() => {
         if (needsFetch) {
-            fetchProjectData();
-            setNeedsFetch(false); // Блокируем повторный вызов
+            fetchProjectData()
+                .then(() => setNeedsFetch(false))
+                .catch((error) => {
+                    console.error('Error fetching project data:', error);
+                    setNeedsFetch(false);
+                });
         }
     }, [needsFetch, fetchProjectData]);
 
@@ -69,10 +74,13 @@ function ServiceCardPageContainer({ onNotify }) {
             loading={loading}
             project={project}
             currentUser={username}
-            onDelete={handleDelete}
+            onDelete={() => setShowDeleteModal(true)}
             onEditComplete={handleEditComplete}
             selectedVersion={selectedVersion}
             onSelectVersion={handleVersionChange}
+            onConfirmDeleteProject={handleDelete}
+            showDeleteModal={showDeleteModal}
+            setShowDeleteModal={setShowDeleteModal}
         />
     );
 }

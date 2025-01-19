@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import {
     getUserInfoApi,
@@ -13,8 +13,11 @@ function DashboardPageContainer({ onNotify }) {
     const [userData, setUserData] = useState(null);
     const [displayName, setDisplayName] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(true);
     const [needsFetch, setNeedsFetch] = useState(true); // Флаг контроля вызовов API
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     // Функция для загрузки данных пользователя
     const fetchUserData = useCallback(async () => {
@@ -43,7 +46,6 @@ function DashboardPageContainer({ onNotify }) {
         try {
             const body = {};
             if (displayName) body.display_name = displayName;
-            if (newPassword) body.password = newPassword;
 
             if (Object.keys(body).length === 0) {
                 onNotify('Нет данных для обновления', 'info');
@@ -53,9 +55,28 @@ function DashboardPageContainer({ onNotify }) {
             const updatedUser = await updateUserApi(username, password, username, body);
             setUserData(updatedUser);
             onNotify('Профиль обновлён', 'success');
-            setNewPassword('');
         } catch (error) {
             onNotify(`Ошибка при обновлении профиля: ${error.message}`, 'error');
+        }
+    };
+
+    // Смена пароля
+    const handleChangePassword = async () => {
+        if (newPassword.length < 8 || newPassword.length > 255) {
+            onNotify(`Пароль должен быть длиной от 8 до 255 символов`, 'error');
+            return
+        }
+        if (newPassword !== confirmPassword) {
+            onNotify('Пароли не совпадают', 'error');
+            return;
+        }
+
+        try {
+            await updateUserApi(username, password, username, { password: newPassword });
+            onNotify('Пароль изменён. Пожалуйста, войдите заново.', 'success');
+            logout();
+        } catch (error) {
+            onNotify(`Ошибка при смене пароля: ${error.message}`, 'error');
         }
     };
 
@@ -77,9 +98,18 @@ function DashboardPageContainer({ onNotify }) {
             setDisplayName={setDisplayName}
             newPassword={newPassword}
             setNewPassword={setNewPassword}
+            confirmPassword={confirmPassword}
+            setConfirmPassword={setConfirmPassword}
             loading={loading}
             onSaveUser={handleSaveUser}
-            onDeleteUser={handleDeleteUser}
+            onChangePassword={() => setShowPasswordModal(true)}
+            onDeleteUser={() => setShowDeleteModal(true)}
+            onConfirmPasswordChange={handleChangePassword}
+            onConfirmDeleteUser={handleDeleteUser}
+            showPasswordModal={showPasswordModal}
+            setShowPasswordModal={setShowPasswordModal}
+            showDeleteModal={showDeleteModal}
+            setShowDeleteModal={setShowDeleteModal}
         />
     );
 }

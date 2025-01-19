@@ -1,4 +1,4 @@
-import React from 'react';
+import 'react';
 import {
     Container,
     Typography,
@@ -10,20 +10,40 @@ import {
     FormControl,
     InputLabel,
     Select,
-    MenuItem,
+    MenuItem, Modal, Paper,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import './ServiceCardPage.css';
 import dayjs from 'dayjs';
+import ReactMarkdown from 'react-markdown';
 
 function ServiceCardPageView({
                                  loading,
                                  project,
-                                 currentUser,
                                  onDelete,
                                  selectedVersion,
                                  onSelectVersion,
+                                 showDeleteModal,
+                                 setShowDeleteModal,
+                                 onConfirmDeleteProject
                              }) {
+    const renderModal = (open, onClose, title, content, action) => (
+        <Modal open={open} onClose={onClose}>
+            <Paper className="dashboard-modal">
+                <Typography variant="h6">{title}</Typography>
+                <Box mt={2}>{content}</Box>
+                <Box mt={2} display="flex" justifyContent="flex-end" gap={2}>
+                    <Button variant="outlined" onClick={onClose}>
+                        Отмена
+                    </Button>
+                    <Button variant="contained" onClick={action}>
+                        Подтвердить
+                    </Button>
+                </Box>
+            </Paper>
+        </Modal>
+    );
+
     const placeholderImage = `https://ui-avatars.com/api/?name=${encodeURIComponent(
         project ? project.title : 'P'
     )}&background=4a3375&color=ffffff&size=40&rounded=true`;
@@ -79,12 +99,12 @@ function ServiceCardPageView({
                     >
                         Delete
                     </Button>
-                    <Button variant="outlined" className="header-button">
-                        Watch
-                    </Button>
-                    <Button variant="outlined" className="header-button">
-                        Star
-                    </Button>
+                    {/*<Button variant="outlined" className="header-button">*/}
+                    {/*    Watch*/}
+                    {/*</Button>*/}
+                    {/*<Button variant="outlined" className="header-button">*/}
+                    {/*    Star*/}
+                    {/*</Button>*/}
                 </Box>
             </Box>
 
@@ -97,9 +117,9 @@ function ServiceCardPageView({
                             <Typography variant="h5" gutterBottom>
                                 Description
                             </Typography>
-                            <Typography className="service-description">
+                            <ReactMarkdown className="service-description">
                                 {project.description}
-                            </Typography>
+                            </ReactMarkdown>
                         </CardContent>
                     </Card>
                 </Box>
@@ -145,6 +165,13 @@ function ServiceCardPageView({
                     </Card>
                 </Box>
             </Box>
+            {renderModal(
+                showDeleteModal,
+                () => setShowDeleteModal(false),
+                'Подтверждение удаления',
+                <Typography>Вы уверены, что хотите удалить данный проект? Это действие необратимо.</Typography>,
+                onConfirmDeleteProject
+            )}
         </Container>
     );
 }

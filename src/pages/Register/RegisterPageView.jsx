@@ -17,33 +17,35 @@ function RegisterPageView({ onSubmit, register, errors }) {
                     Регистрация
                 </Typography>
                 <form onSubmit={onSubmit} className="register-form">
-                    <TextField
-                        label="Логин (username)"
-                        fullWidth
-                        margin="normal"
-                        {...register('username', { required: 'Укажите логин' })}
-                        error={!!errors.username}
-                        helperText={errors.username?.message}
-                    />
-                    <TextField
-                        label="Пароль"
-                        type="password"
-                        fullWidth
-                        margin="normal"
-                        {...register('password', { required: 'Укажите пароль' })}
-                        error={!!errors.password}
-                        helperText={errors.password?.message}
-                    />
-                    <TextField
-                        label="Отображаемое имя (необязательно)"
-                        fullWidth
-                        margin="normal"
-                        {...register('display_name')}
-                    />
+                    <Box display="flex" flexDirection="column" gap={2}>
+                        <TextField
+                            label="Логин (username)"
+                            fullWidth
+                            margin="normal"
+                            {...register('username', { required: 'Укажите логин' })}
+                            error={!!errors.username}
+                            helperText={errors.username?.message}
+                        />
+                        <TextField
+                            label="Пароль"
+                            type="password"
+                            fullWidth
+                            margin="normal"
+                            {...register('password', { required: 'Укажите пароль' })}
+                            error={!!errors.password}
+                            helperText={errors.password?.message}
+                        />
+                        <TextField
+                            label="Отображаемое имя (необязательно)"
+                            fullWidth
+                            margin="normal"
+                            {...register('display_name')}
+                        />
 
-                    <Button variant="contained" type="submit" className="register-button">
-                        Зарегистрироваться
-                    </Button>
+                        <Button variant="contained" type="submit" className="register-button">
+                            Зарегистрироваться
+                        </Button>
+                    </Box>
                 </form>
             </Box>
         </Container>

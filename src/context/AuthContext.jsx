@@ -40,6 +40,31 @@ export function AuthProvider({ children }) {
         setIsAuthenticated(false);
     }
 
+    // Валидация username
+    function validateUsername(user) {
+        if (!user) {
+            throw new Error('Имя пользователя не может быть пустым');
+        }
+        if (user.length < 5 || user.length > 32) {
+            throw new Error('Имя пользователя должно быть длиной от 5 до 32 символов');
+        }
+        if (!/^[a-zA-Z\-_0-9]+$/.test(user)) {
+            throw new Error(
+                'Имя пользователя может содержать только буквы, цифры, дефис и подчеркивание'
+            );
+        }
+    }
+
+    // Валидация пароля
+    function validatePassword(pass) {
+        if (!pass) {
+            throw new Error('Пароль не может быть пустым');
+        }
+        if (pass.length < 8 || pass.length > 255) {
+            throw new Error('Пароль должен быть длиной от 8 до 255 символов');
+        }
+    }
+
     /**
      * Если loginUserApi вернёт false => значит 401 => выбросим ошибку
      * Если true => doLogin(...)
@@ -53,11 +78,18 @@ export function AuthProvider({ children }) {
     }
 
     async function register({ user, pass, displayName }) {
-        const success = await registerUserApi(user, pass, displayName);
-        if (!success) {
-            throw new Error('Ошибка регистрации или 401');
+        try {
+            validateUsername(user);
+            validatePassword(pass);
+
+            const success = await registerUserApi(user, pass, displayName);
+            if (!success) {
+                throw new Error('Ошибка регистрации или 401');
+            }
+            doLogin(user, pass);
+        } catch (error) {
+            throw new Error(`${error.message}`);
         }
-        doLogin(user, pass);
     }
 
     const value = {

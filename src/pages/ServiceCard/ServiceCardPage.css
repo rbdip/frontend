@@ -55,7 +55,7 @@
 .header-button {
     font-size: 0.875rem;
     color: #e0e0e0 !important;
-    border: 1px solid #555 !important;
+    border: 1px solid #e0e0e0 !important;
     padding: 4px 12px;
     border-radius: 6px;
     transition: background-color 0.3s ease, border-color 0.3s ease;
@@ -86,7 +86,7 @@
     background-color: #3b2b50;
     border: 1px solid #4a3375;
     border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     padding: 16px;
 }
 
@@ -94,6 +94,21 @@
     font-size: 1rem;
     line-height: 1.6;
     color: #e0e0e0;
+    white-space: pre-line;
+}
+.service-description h1,
+.service-description h2,
+.service-description h3 {
+    color: #ffffff;
+}
+
+.service-description a {
+    color: #a29bfe;
+    text-decoration: none;
+}
+
+.service-description a:hover {
+    text-decoration: underline;
 }
 
 /* Правая панель */
@@ -109,7 +124,7 @@
     background-color: #3b2b50;
     border: 1px solid #4a3375;
     border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     padding: 16px;
 }
 
