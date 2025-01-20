@@ -1,11 +1,12 @@
-/* Общий контейнер */
+/* src/pages/ServiceCard/ServiceCardPage.css */
+
 .service-card-container {
     margin-top: 40px;
     color: #ffffff;
     font-family: 'Roboto', sans-serif;
 }
 
-/* Блок заголовка */
+/* Заголовок */
 .service-header {
     display: flex;
     justify-content: space-between;
@@ -15,7 +16,6 @@
     border-radius: 8px;
     padding: 12px 16px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .service-header-content {
@@ -24,32 +24,23 @@
     gap: 12px;
 }
 
-.service-project-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: #4a3375;
-}
-
 .service-project-name {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 600;
 }
 
 .service-project-visibility {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     background-color: #444;
     color: #bbb;
     padding: 2px 8px;
     border-radius: 4px;
 }
 
-/* Блок кнопок заголовка */
 .service-header-buttons {
     display: flex;
-    justify-content: space-between; /* Равномерное распределение кнопок */
-    gap: 16px; /* Единое расстояние между кнопками */
+    align-items: center;
+    gap: 12px;
 }
 
 .header-button {
@@ -66,14 +57,13 @@
     border-color: #666;
 }
 
-/* Основная вёрстка */
+/* Макет */
 .service-layout {
     display: flex;
     justify-content: space-between;
     gap: 20px;
 }
 
-/* Основной контент */
 .service-main-content {
     flex: 3;
     display: flex;
@@ -81,37 +71,6 @@
     gap: 20px;
 }
 
-/* Блок описания */
-.service-description-card {
-    background-color: #3b2b50;
-    border: 1px solid #4a3375;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    padding: 16px;
-}
-
-.service-description {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #e0e0e0;
-    white-space: pre-line;
-}
-.service-description h1,
-.service-description h2,
-.service-description h3 {
-    color: #ffffff;
-}
-
-.service-description a {
-    color: #a29bfe;
-    text-decoration: none;
-}
-
-.service-description a:hover {
-    text-decoration: underline;
-}
-
-/* Правая панель */
 .service-sidebar {
     flex: 1;
     display: flex;
@@ -119,18 +78,90 @@
     gap: 16px;
 }
 
-.service-version-select,
+/* Блок описания */
+.service-description-card {
+    background-color: #3b2b50;
+    border: 1px solid #4a3375;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.service-description-card button {
+    font-size: 0.7rem;
+    text-transform: none;
+    color: #ccc;
+}
+
+/* Селектор версий */
+.service-version-select {
+    background-color: #3b2b50;
+    border: 1px solid #4a3375;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.service-version-select button {
+    min-width: 32px;
+    padding: 4px 8px;
+    font-size: 0.875rem;
+    color: #e0e0e0 !important;
+    border: 1px solid #e0e0e0 !important;
+}
+
+/* Информация */
+.service-project-path {
+    font-size: 0.9rem;
+    background-color: #444;
+    color: #bbb;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-decoration: none; /* убрать подчеркивание */
+    margin-left: 10px;
+}
+.service-project-path:hover {
+    background-color: #555;
+    color: #fff;
+}
+
+/* Блок About более красиво */
 .service-about {
     background-color: #3b2b50;
     border: 1px solid #4a3375;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     padding: 16px;
+    /* можно добавить тень */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    color: #e0e0e0;
+    /*font-family: 'Roboto', serif;*/
+}
+.service-about .service-dates {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-top: 6px;
 }
 
 .service-dates {
-    margin-top: 8px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    margin-top: 4px;
     color: #d0d0d0;
-    line-height: 1.4;
+}
+
+/* Модалки */
+.dashboard-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3b2b50;
+    border: 1px solid #4a3375;
+    border-radius: 12px;
+    padding: 24px;
+    width: 400px;
+    max-width: 90%;
+    color: #ffffff;
+}
+
+/* Пример иконки звезды */
+.MuiIconButton-root {
+    padding: 4px;
 }

@@ -195,18 +195,23 @@ export async function createProjectApi(username, password, body) {
  *   ]
  * }
  */
-export async function getProjectByNameApi(currentUser, currentPass, authorUsername, projectName) {
-    const url = `${BASE_URL}/projects/${authorUsername}/${projectName}`;
+export async function getProjectByNameApi(
+    currentUser, currentPass,
+    authorUsername, projectName,
+    versionQuery = ''
+) {
+    let url = `${BASE_URL}/projects/${authorUsername}/${projectName}`;
+    if (versionQuery) {
+        // Добавляем ?version=...
+        url += `?version=${encodeURIComponent(versionQuery)}`;
+    }
     const resp = await fetch(url, {
-        method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Basic ${encodeBasicAuth(currentUser, currentPass)}`,
+            Authorization: 'Basic ' + btoa(`${currentUser}:${currentPass}`),
         },
     });
-
     if (!resp.ok) {
-        throw new Error(`Ошибка при получении проекта: [${resp.status}]`);
+        throw new Error(`Ошибка GET проекта: ${resp.status}`);
     }
     return await resp.json();
 }
@@ -263,4 +268,98 @@ export async function deleteProjectApi(currentUser, currentPass, authorUsername,
         throw new Error(`Ошибка при удалении проекта: [${resp.status}]`);
     }
     return true;
+}
+
+// POST /api/v1/projects/:author/:projectName/versions
+export async function createProjectVersionApi(
+    currentUser, currentPass,
+    authorUsername, projectName,
+    body
+) {
+    const url = `${BASE_URL}/projects/${authorUsername}/${projectName}/versions`;
+    const resp = await fetch(url, {
+        method: 'POST',
+        headers: {
+            Authorization: 'Basic ' + btoa(`${currentUser}:${currentPass}`),
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+    if (!resp.ok) {
+        throw new Error(`Ошибка при добавлении версии: ${resp.status}`);
+    }
+    return await resp.json(); // Возвращает обновлённый проект
+}
+
+// PATCH /api/v1/projects/:author/:projectName/versions/:versionName
+export async function updateProjectVersionApi(
+    currentUser, currentPass,
+    authorUsername, projectName,
+    oldVersionName,
+    body
+) {
+    const url = `${BASE_URL}/projects/${authorUsername}/${projectName}/versions/${encodeURIComponent(oldVersionName)}`;
+    const resp = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+            Authorization: 'Basic ' + btoa(`${currentUser}:${currentPass}`),
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+    if (!resp.ok) {
+        throw new Error(`Ошибка при обновлении версии: ${resp.status}`);
+    }
+    return await resp.json();
+}
+
+// DELETE /api/v1/projects/:author/:projectName/versions/:versionName
+export async function deleteProjectVersionApi(
+    currentUser, currentPass,
+    authorUsername, projectName,
+    versionName
+) {
+    const url = `${BASE_URL}/projects/${authorUsername}/${projectName}/versions/${encodeURIComponent(versionName)}`;
+    const resp = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            Authorization: 'Basic ' + btoa(`${currentUser}:${currentPass}`),
+        },
+    });
+    if (!resp.ok) {
+        throw new Error(`Ошибка при удалении версии: ${resp.status}`);
+    }
+    return true;
+}
+
+export async function setFavouriteApi(currentUser, currentPass, authorUsername, projectName) {
+    const url = `${BASE_URL}/projects/${authorUsername}/${projectName}/favourites`;
+    const resp = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            Authorization: 'Basic ' + btoa(`${currentUser}:${currentPass}`)
+        }
+    });
+    if (!resp.ok) {
+        throw new Error(`Ошибка при добавлении в избранное: ${resp.status}`);
+    }
+    // Если resp.status = 204, нет тела
+    if (resp.status === 204) return true;
+    // Если 200 => JSON
+    return await resp.json();
+}
+
+export async function unsetFavouriteApi(currentUser, currentPass, authorUsername, projectName) {
+    const url = `${BASE_URL}/projects/${authorUsername}/${projectName}/favourites`;
+    const resp = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            Authorization: 'Basic ' + btoa(`${currentUser}:${currentPass}`)
+        }
+    });
+    if (!resp.ok) {
+        throw new Error(`Ошибка при удалении из избранного: ${resp.status}`);
+    }
+    if (resp.status === 204) return true;
+    return await resp.json();
 }

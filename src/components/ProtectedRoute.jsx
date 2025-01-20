@@ -7,7 +7,6 @@ function ProtectedRoute({ children }) {
     const { isAuthenticated } = useAuth();
 
     if (!isAuthenticated) {
-        // Если не авторизован, только тогда редиректим
         return <Navigate to="/login" replace />;
     }
     return children;
