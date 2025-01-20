@@ -1,6 +1,6 @@
 // src/pages/Catalog/CatalogPageView.jsx
 
-import React from 'react';
+import 'react';
 import {
     Container,
     Typography,

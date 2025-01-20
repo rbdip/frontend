@@ -1,5 +1,5 @@
 // src/pages/ServiceCard/ServiceCardPageView.jsx
-import React from 'react';
+import 'react';
 import {
     Container,
     Typography,
