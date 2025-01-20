@@ -250,12 +250,12 @@ function ServiceCardPageView({
 
                 <Box className="service-header-buttons">
                     {/* Лайк */}
-                    {/*<Box display="flex" alignItems="center" gap={1}>*/}
-                    {/*    <IconButton onClick={onToggleFavourite} size="small">*/}
-                    {/*        {liked ? <StarIcon sx={{ color: 'gold' }} /> : <StarBorderIcon sx={{ color: 'lightgray' }} />}*/}
-                    {/*    </IconButton>*/}
-                    {/*    <Typography>{likeCount}</Typography>*/}
-                    {/*</Box>*/}
+                    <Box display="flex" alignItems="center" gap={1}>
+                        <IconButton onClick={onToggleFavourite} size="small">
+                            {liked ? <StarIcon sx={{ color: 'gold' }} /> : <StarBorderIcon sx={{ color: 'lightgray' }} />}
+                        </IconButton>
+                        <Typography>{likeCount}</Typography>
+                    </Box>
                     {/* Старое редактирование проекта */}
                     <Button
                         variant="outlined"

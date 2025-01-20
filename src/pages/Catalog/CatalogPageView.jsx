@@ -48,46 +48,46 @@ function CatalogPageView({
 
     return (
         <Container maxWidth="md" className="catalog-container">
-            {/*<Box*/}
-            {/*    component="form"*/}
-            {/*    onSubmit={handleSubmitSearch}*/}
-            {/*    sx={{*/}
-            {/*        display: 'flex',*/}
-            {/*        alignItems: 'center',*/}
-            {/*        gap: 2,*/}
-            {/*        mb: 3,*/}
-            {/*        flexWrap: 'wrap',*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    <Typography variant="h4" sx={{ flex: '1 1 auto' }}>*/}
-            {/*        Каталог сервисов*/}
-            {/*    </Typography>*/}
+            <Box
+                component="form"
+                onSubmit={handleSubmitSearch}
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    mb: 3,
+                    flexWrap: 'wrap',
+                }}
+            >
+                <Typography variant="h4" sx={{ flex: '1 1 auto' }}>
+                    Каталог сервисов
+                </Typography>
 
-            {/*    /!* Поле поиска *!/*/}
-            {/*    <TextField*/}
-            {/*        size="small"*/}
-            {/*        label="Поиск"*/}
-            {/*        value={query}*/}
-            {/*        onChange={(e) => onQueryChange(e.target.value)}*/}
-            {/*        sx={{ minWidth: 200 }}*/}
-            {/*    />*/}
+                {/* Поле поиска */}
+                <TextField
+                    size="small"
+                    label="Поиск"
+                    value={query}
+                    onChange={(e) => onQueryChange(e.target.value)}
+                    sx={{ minWidth: 200 }}
+                />
 
-            {/*    /!* Выбор limit *!/*/}
-            {/*    <FormControl size="small" sx={{ width: 100 }}>*/}
-            {/*        <InputLabel id="limit-label">На странице</InputLabel>*/}
-            {/*        <Select*/}
-            {/*            labelId="limit-label"*/}
-            {/*            label="На странице"*/}
-            {/*            value={String(limit)}*/}
-            {/*            onChange={handleLimitSelect}*/}
-            {/*        >*/}
-            {/*            <MenuItem value="5">5</MenuItem>*/}
-            {/*            <MenuItem value="10">10</MenuItem>*/}
-            {/*            <MenuItem value="20">20</MenuItem>*/}
-            {/*            <MenuItem value="50">50</MenuItem>*/}
-            {/*        </Select>*/}
-            {/*    </FormControl>*/}
-            {/*</Box>*/}
+                {/* Выбор limit */}
+                <FormControl size="small" sx={{ width: 100 }}>
+                    <InputLabel id="limit-label">На странице</InputLabel>
+                    <Select
+                        labelId="limit-label"
+                        label="На странице"
+                        value={String(limit)}
+                        onChange={handleLimitSelect}
+                    >
+                        <MenuItem value="5">5</MenuItem>
+                        <MenuItem value="10">10</MenuItem>
+                        <MenuItem value="20">20</MenuItem>
+                        <MenuItem value="50">50</MenuItem>
+                    </Select>
+                </FormControl>
+            </Box>
 
             {/* Пока грузится - Skeleton */}
             {loading && (
@@ -118,9 +118,9 @@ function CatalogPageView({
                                             <Typography variant="body2" color="text.secondary">
                                                 title: {proj.title}
                                             </Typography>
-                                            {/*<Typography variant="caption" color="text.secondary" display="block">*/}
-                                            {/*    Лайков: {proj.like_count}*/}
-                                            {/*</Typography>*/}
+                                            <Typography variant="caption" color="text.secondary" display="block">
+                                                Лайков: {proj.like_count}
+                                            </Typography>
                                             <Typography variant="caption" display="block" sx={{ mt: 1, color: 'gray' }}>
                                                 Дата создания: {createdOnHuman}
                                             </Typography>
@@ -144,16 +144,16 @@ function CatalogPageView({
             </Fade>
 
             {/* Пагинация */}
-            {/*{!loading && (projects && projects.length > 0) && (*/}
-            {/*    <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>*/}
-            {/*        <Pagination*/}
-            {/*            count={totalPages}*/}
-            {/*            page={page + 1} // MUI pagination is 1-based*/}
-            {/*            onChange={handlePageSelect}*/}
-            {/*            color="primary"*/}
-            {/*        />*/}
-            {/*    </Box>*/}
-            {/*)}*/}
+            {!loading && (projects && projects.length > 0) && (
+                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+                    <Pagination
+                        count={totalPages}
+                        page={page + 1} // MUI pagination is 1-based
+                        onChange={handlePageSelect}
+                        color="primary"
+                    />
+                </Box>
+            )}
         </Container>
     );
 }

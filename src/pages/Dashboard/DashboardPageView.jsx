@@ -89,9 +89,9 @@ function DashboardPageView({
                         <Typography variant="body2" color="text.secondary">
                             title: {proj.title}
                         </Typography>
-                        {/*<Typography variant="caption" color="text.secondary" display="block">*/}
-                        {/*    Лайков: {proj.like_count}*/}
-                        {/*</Typography>*/}
+                        <Typography variant="caption" color="text.secondary" display="block">
+                            Лайков: {proj.like_count}
+                        </Typography>
                         <Typography variant="caption" display="block" sx={{ mt: 1, color: 'gray' }}>
                             Дата создания: {createdOnProj}
                         </Typography>
@@ -122,9 +122,9 @@ function DashboardPageView({
                         <Typography variant="body2" color="text.secondary">
                             title: {fproj.title}
                         </Typography>
-                        {/*<Typography variant="caption" color="text.secondary" display="block">*/}
-                        {/*    Лайков: {fproj.like_count}*/}
-                        {/*</Typography>*/}
+                        <Typography variant="caption" color="text.secondary" display="block">
+                            Лайков: {fproj.like_count}
+                        </Typography>
                         <Typography variant="caption" display="block" sx={{ mt: 1, color: 'gray' }}>
                             Дата создания: {createdOnFav}
                         </Typography>
