@@ -155,7 +155,7 @@ function ServiceCardPageContainer({ onNotify }) {
     // Редактировать версию
     const handleEditVersion = async () => {
         try {
-            validatePattern(newVersionName, "version_name")
+            validatePattern(editVersionName, "version_name")
             if (!editVersionName && !editVersionDesc && !editVersionOrder) {
                 onNotify('Укажите хотя бы одно поле', 'error');
                 return;
