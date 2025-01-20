@@ -134,16 +134,24 @@ export async function deleteUserApi(currentUser, currentPass, userToDelete) {
  *   ...
  * ]
  */
-export async function getAllProjectsApi() {
-    const resp = await fetch(`${BASE_URL}/projects`, {
-        method: 'GET',
+export async function getAllProjectsApi({ limit, page, query }) {
+    const params = new URLSearchParams();
+    if (limit != null) params.set('limit', limit);
+    if (page != null) params.set('page', page);
+    if (query) params.set('query', query);
+
+    const url = `${BASE_URL}/projects?${params.toString()}`;
+    const resp = await fetch(url, {
         headers: {
             'Content-Type': 'application/json',
+            // Authorization: 'Basic ' + btoa(`${username}:${password}`),
         },
     });
+
     if (!resp.ok) {
-        throw new Error(`Ошибка при получении projects: [${resp.status}]`);
+        throw new Error(`Ошибка при получении проектов: [${resp.status}]`);
     }
+
     return await resp.json();
 }
 
@@ -361,5 +369,18 @@ export async function unsetFavouriteApi(currentUser, currentPass, authorUsername
         throw new Error(`Ошибка при удалении из избранного: ${resp.status}`);
     }
     if (resp.status === 204) return true;
+    return await resp.json();
+}
+
+export async function getUserFavouritesApi(currentUser, currentPass, userToLoad) {
+    const url = `${BASE_URL}/users/${userToLoad}/favourites`;
+    const resp = await fetch(url, {
+        headers: {
+            Authorization: 'Basic ' + btoa(`${currentUser}:${currentPass}`)
+        }
+    });
+    if (!resp.ok) {
+        throw new Error(`Ошибка при загрузке избранных: ${resp.status}`);
+    }
     return await resp.json();
 }

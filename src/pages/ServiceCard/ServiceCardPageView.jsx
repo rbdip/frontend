@@ -284,7 +284,7 @@ function ServiceCardPageView({
                         <CardContent>
                             <Box display="flex" justifyContent="space-between">
                                 <Typography variant="h6" gutterBottom>
-                                    Описание (версия: {project.display_version})
+                                    Описание
                                 </Typography>
                                 <Button
                                     variant="text"
@@ -304,50 +304,6 @@ function ServiceCardPageView({
                 {/* Сайдбар */}
                 <Box className="service-sidebar">
                     {/* Селектор версий */}
-                    {/*<Card className="service-version-select">*/}
-                    {/*    <CardContent>*/}
-                    {/*        <Typography variant="subtitle1" gutterBottom>*/}
-                    {/*            Версии*/}
-                    {/*        </Typography>*/}
-                    {/*        <FormControl fullWidth size="small">*/}
-                    {/*            <InputLabel>Версия</InputLabel>*/}
-                    {/*            <Select*/}
-                    {/*                value={selectedVersion}*/}
-                    {/*                label="Версия"*/}
-                    {/*                onChange={(e) => onSelectVersion(e.target.value)}*/}
-                    {/*            >*/}
-                    {/*                {sortedVersions.map((ver) => (*/}
-                    {/*                    <MenuItem key={ver.version_name} value={ver.version_name}>*/}
-                    {/*                        {ver.version_name}*/}
-                    {/*                    </MenuItem>*/}
-                    {/*                ))}*/}
-                    {/*            </Select>*/}
-                    {/*        </FormControl>*/}
-                    {/*        /!*<Box display="flex" gap={1} sx={{ mt: 2 }}>*!/*/}
-                    {/*        /!*    <Button variant="outlined" size="small" onClick={onAddVersionClick}>*!/*/}
-                    {/*        /!*        +*!/*/}
-                    {/*        /!*    </Button>*!/*/}
-                    {/*        /!*    <Button*!/*/}
-                    {/*        /!*        variant="outlined"*!/*/}
-                    {/*        /!*        size="small"*!/*/}
-                    {/*        /!*        onClick={onEditVersionClick}*!/*/}
-                    {/*        /!*        disabled={!selectedVersion}*!/*/}
-                    {/*        /!*    >*!/*/}
-                    {/*        /!*        ✎*!/*/}
-                    {/*        /!*    </Button>*!/*/}
-                    {/*        /!*    <Button*!/*/}
-                    {/*        /!*        variant="outlined"*!/*/}
-                    {/*        /!*        size="small"*!/*/}
-                    {/*        /!*        color="error"*!/*/}
-                    {/*        /!*        onClick={onDeleteVersionClick}*!/*/}
-                    {/*        /!*        disabled={!selectedVersion}*!/*/}
-                    {/*        /!*    >*!/*/}
-                    {/*        /!*        🗑️*!/*/}
-                    {/*        /!*    </Button>*!/*/}
-                    {/*        /!*</Box>*!/*/}
-                    {/*    </CardContent>*/}
-                    {/*</Card>*/}
-
                     {/* Инфа */}
                     <Card className="service-about">
                         <CardContent>

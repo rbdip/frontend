@@ -59,7 +59,7 @@ function ServiceFormPageView({
                     />
 
                     <TextField
-                        label="Описание версии по умолчанию (description)"
+                        label="Описание (description)"
                         fullWidth
                         margin="normal"
                         multiline
