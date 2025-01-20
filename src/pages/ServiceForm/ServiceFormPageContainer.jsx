@@ -80,7 +80,7 @@ function ServiceFormPageContainer({ onNotify, editMode = false }) {
             validatePattern(formData.name, "Name");
             validateNotNull(formData.title, "Заголовок");
             validateLength(formData.title, "Заголовок", 1, 255);
-            // validatePattern(formData.display_version, "Версия");
+            validatePattern(formData.display_version, "Версия");
             if (editMode) {
                 // Обновляем проект
                 const updated = await updateProjectApi(

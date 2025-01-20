@@ -1,5 +1,5 @@
 // src/pages/ServiceCard/ServiceCardPageContainer.jsx
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 import {
@@ -112,9 +112,26 @@ function ServiceCardPageContainer({ onNotify }) {
         setNeedsFetch(true);
     };
 
+    function validateNotNull(spaceValue, spaceName) {
+        if (!spaceValue) {
+            throw new Error(`${spaceName} не может быть пустым`);
+        }
+    }
+
+    function validatePattern(spaceValue, spaceName) {
+        if (!/^[a-zA-Z\-_0-9]+$/.test(spaceValue)) {
+            throw new Error(
+                `${spaceName} может содержать только буквы, цифры, дефис и подчеркивание`
+            );
+        }
+    }
+
     // Добавить версию
     const handleAddVersion = async () => {
         try {
+            validateNotNull(newVersionName, "version_name")
+            validatePattern(newVersionName, "version_name")
+            validateNotNull(newVersionDesc, "description")
             if (!newVersionName && !newVersionDesc) {
                 onNotify('Укажите хотя бы version_name или description', 'error');
                 return;
@@ -138,6 +155,7 @@ function ServiceCardPageContainer({ onNotify }) {
     // Редактировать версию
     const handleEditVersion = async () => {
         try {
+            validatePattern(newVersionName, "version_name")
             if (!editVersionName && !editVersionDesc && !editVersionOrder) {
                 onNotify('Укажите хотя бы одно поле', 'error');
                 return;

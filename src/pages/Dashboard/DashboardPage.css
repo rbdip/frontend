@@ -31,12 +31,17 @@
     width: fit-content;
 }
 
+.dashboard-btn-favourites {
+    width: fit-content;
+}
+
 .dashboard-btn-delete {
     width: fit-content;
 }
 
 .dashboard-projects-box {
     margin-top: 24px;
+    padding-bottom: 28px !important;
 }
 
 .dashboard-project-card {
@@ -60,4 +65,31 @@
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
+
+.MuiTab-root {
+    text-transform: none;
+    font-weight: 500;
+}
+
+/* MyTabsAnimations.css */
+/* Пример fade-in/out */
+.fade-enter {
+    opacity: 0;
+    z-index: 1; /* чтобы входящий блок был поверх */
+}
+.fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+}
+.fade-exit {
+    opacity: 1;
+}
+.fade-exit.fade-exit-active {
+    opacity: 0;
+    transition: opacity 300ms ease-in;
+}
+.tab-content {
+    padding-bottom: 28px;
+}
+
 

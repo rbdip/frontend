@@ -1,9 +1,11 @@
+// src/pages/Dashboard/DashboardPageContainer.jsx
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import {
     getUserInfoApi,
     updateUserApi,
     deleteUserApi,
+    getUserFavouritesApi,
 } from '../../api/projectApi';
 import DashboardPageView from './DashboardPageView';
 
@@ -15,11 +17,17 @@ function DashboardPageContainer({ onNotify }) {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(true);
-    const [needsFetch, setNeedsFetch] = useState(true); // Флаг контроля вызовов API
+    const [needsFetch, setNeedsFetch] = useState(true);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    // Функция для загрузки данных пользователя
+    // Активная вкладка: 0 = «Мои проекты», 1 = «Мои избранные»
+    const [currentTab, setCurrentTab] = useState(0);
+
+    // Данные для «Мои избранные»
+    const [favourites, setFavourites] = useState([]);
+
+    // Загружаем данные пользователя (Мои проекты)
     const fetchUserData = useCallback(async () => {
         try {
             setLoading(true);
@@ -33,15 +41,15 @@ function DashboardPageContainer({ onNotify }) {
         }
     }, [username, password, onNotify]);
 
-    // Загрузка данных при монтировании или при изменении флага needsFetch
+    // Первый рендер или needsFetch
     useEffect(() => {
         if (needsFetch) {
             fetchUserData();
-            setNeedsFetch(false); // Блокируем повторный вызов
+            setNeedsFetch(false);
         }
     }, [needsFetch, fetchUserData]);
 
-    // Сохранить изменения пользователя (PATCH)
+    // Сохранить изменения (display_name)
     const handleSaveUser = async () => {
         try {
             const body = {};
@@ -51,7 +59,6 @@ function DashboardPageContainer({ onNotify }) {
                 onNotify('Нет данных для обновления', 'info');
                 return;
             }
-
             const updatedUser = await updateUserApi(username, password, username, body);
             setUserData(updatedUser);
             onNotify('Профиль обновлён', 'success');
@@ -63,14 +70,13 @@ function DashboardPageContainer({ onNotify }) {
     // Смена пароля
     const handleChangePassword = async () => {
         if (newPassword.length < 8 || newPassword.length > 255) {
-            onNotify(`Пароль должен быть длиной от 8 до 255 символов`, 'error');
-            return
+            onNotify('Пароль должен быть длиной от 8 до 255 символов', 'error');
+            return;
         }
         if (newPassword !== confirmPassword) {
             onNotify('Пароли не совпадают', 'error');
             return;
         }
-
         try {
             await updateUserApi(username, password, username, { password: newPassword });
             onNotify('Пароль изменён. Пожалуйста, войдите заново.', 'success');
@@ -91,8 +97,29 @@ function DashboardPageContainer({ onNotify }) {
         }
     };
 
+    // Переключение вкладок
+    const handleTabChange = (newTab) => {
+        setCurrentTab(newTab);
+        // Если переходим на вкладку «Избранные», грузим фавориты
+        if (newTab === 1) {
+            fetchFavourites();
+        }
+    };
+
+    // Загрузка избранных
+    const fetchFavourites = useCallback(async () => {
+        try {
+            const data = await getUserFavouritesApi(username, password, username);
+            // data: { "projects": [...], "total_elements": 2, "total_pages": null }
+            setFavourites(data.projects || []);
+        } catch (error) {
+            onNotify(`Ошибка при загрузке избранного: ${error.message}`, 'error');
+        }
+    }, [username, password, onNotify]);
+
     return (
         <DashboardPageView
+            // Основные пропсы
             userData={userData}
             displayName={displayName}
             setDisplayName={setDisplayName}
@@ -110,6 +137,13 @@ function DashboardPageContainer({ onNotify }) {
             setShowPasswordModal={setShowPasswordModal}
             showDeleteModal={showDeleteModal}
             setShowDeleteModal={setShowDeleteModal}
+
+            // Вкладки
+            currentTab={currentTab}
+            onTabChange={handleTabChange}
+
+            // Избранные
+            favourites={favourites}
         />
     );
 }
